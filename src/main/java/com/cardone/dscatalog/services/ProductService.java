@@ -10,17 +10,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.cardone.dscatalog.repositories.CategoryRepository;
-import com.cardone.dscatalog.repositories.ProductRepository;
-
-import jakarta.persistence.EntityNotFoundException;
-
 import com.cardone.dscatalog.dto.CategoryDTO;
 import com.cardone.dscatalog.dto.ProductDTO;
 import com.cardone.dscatalog.entities.Category;
 import com.cardone.dscatalog.entities.Product;
 import com.cardone.dscatalog.exceptions.DatabaseException;
 import com.cardone.dscatalog.exceptions.ResourceNotFoundException;
+import com.cardone.dscatalog.repositories.CategoryRepository;
+import com.cardone.dscatalog.repositories.ProductRepository;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class ProductService {
@@ -61,14 +60,14 @@ public class ProductService {
             entity = repository.save(entity);
             return new ProductDTO(entity);
         } catch (EntityNotFoundException e) {
-            throw new ResourceNotFoundException("Categoria não encontrada " + id);
+            throw new ResourceNotFoundException("Produto não encontrado " + id);
         }
     }
 
     @Transactional(propagation = Propagation.SUPPORTS)
     public void deleteProduct(Long id) {
         if (!repository.existsById(id)) {
-            throw new ResourceNotFoundException("Categoria não encontrada " + id);
+            throw new ResourceNotFoundException("Produto não encontrado " + id);
         }
         try {
             repository.deleteById(id);

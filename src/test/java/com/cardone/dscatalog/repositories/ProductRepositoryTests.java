@@ -16,6 +16,7 @@ public class ProductRepositoryTests {
 
     @Autowired
     private ProductRepository repository;
+    
     private Long existingId ;
     private Long nonExistingId ;
     private Long countTotalProducts;
@@ -73,7 +74,7 @@ public class ProductRepositoryTests {
     public void findByIdShouldReturnEmptyWhenIdNotExists() {
         
         Optional<Product> result = repository.findById(nonExistingId);
-        //Valida se existe o item excluido
+        //Valida se a pesquisa trouxe um item vazio
         Assertions.assertFalse(result.isPresent());
         Assertions.assertTrue(result.isEmpty());
     }
