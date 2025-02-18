@@ -156,7 +156,6 @@ public class ProductServiceTests {
         //Valida se o item existe na base de dados
         Assertions.assertNotNull(result);
         //Verifica se foi chamado pelo menos uma vez o findById no Service
-        
     }
 
     @Test
