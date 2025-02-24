@@ -1,12 +1,15 @@
 package com.cardone.dscatalog.entities;
 
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
@@ -24,6 +27,9 @@ public class Category {
     @Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
     private Instant updatedAt;
 
+    @ManyToMany(mappedBy = "categories")
+    private Set<Product> products = new HashSet<>();
+    
     public Category() {
     }
 
@@ -95,6 +101,10 @@ public class Category {
         } else if (!name.equals(other.name))
             return false;
         return true;
+    }
+
+    public Set<Product> getProducts() {
+        return products;
     }
 
 }
