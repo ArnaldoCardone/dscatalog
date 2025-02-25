@@ -112,6 +112,10 @@ public class User {
         return Objects.equals(this.id, other.id);
     }
 
+    public void setRoles(Set<Roles> roles) {
+        this.roles = roles;
+    }
+
     
     
 }

@@ -44,7 +44,7 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserDTO> insertProduct(@Valid @RequestBody UserInsertDTO userInsertDTO) {
+    public ResponseEntity<UserDTO> insertUser(@Valid @RequestBody UserInsertDTO userInsertDTO) {
         UserDTO result = service.insert(userInsertDTO);
         //Monta a URL para acessar o recurso criado
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(result.getId()).toUri();

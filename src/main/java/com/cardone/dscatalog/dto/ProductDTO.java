@@ -14,7 +14,7 @@ import jakarta.validation.constraints.Size;
 public class ProductDTO {
 
     private Long id;
-    @Size(min = 5, max = 60, message = "O nome do produto deve ter entre 3 e 60 caracteres")
+    @Size(min = 5, max = 60, message = "O nome do produto deve ter entre 5 e 60 caracteres")
     @NotBlank(message = "Campo obrigatório")
     private String name;
     private String description;
