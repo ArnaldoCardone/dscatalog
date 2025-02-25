@@ -5,11 +5,18 @@ import java.util.List;
 
 import com.cardone.dscatalog.entities.User;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 public class UserDTO {
  
     private Long id;
+    @NotBlank(message = "Campo obrigatório")
+    @Size(min = 3, max = 90, message = "O nome deve ter entre 3 e 90 caracteres")
     private String firstName;
     private String lastName;
+    @Email(message = "Favor entrar com um email válido")
     private String email;
     private List<RolesDTO> roles = new ArrayList<>();
 
