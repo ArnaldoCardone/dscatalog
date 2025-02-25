@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cardone.dscatalog.dto.RolesDTO;
 import com.cardone.dscatalog.dto.UserDTO;
 import com.cardone.dscatalog.dto.UserInsertDTO;
+import com.cardone.dscatalog.dto.UserUpdateDTO;
 import com.cardone.dscatalog.entities.Roles;
 import com.cardone.dscatalog.entities.User;
 import com.cardone.dscatalog.exceptions.DatabaseException;
@@ -58,7 +59,7 @@ public class UserService {
     }
 
     @Transactional
-    public UserDTO update(Long id, UserDTO dto) {
+    public UserDTO update(Long id, UserUpdateDTO dto) {
         try {
             User entity = repository.getReferenceById(id);
             copyDtoToEntity(dto,entity);

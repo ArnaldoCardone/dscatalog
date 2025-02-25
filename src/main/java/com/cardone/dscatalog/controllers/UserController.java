@@ -20,6 +20,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.cardone.dscatalog.dto.UserDTO;
 import com.cardone.dscatalog.dto.UserInsertDTO;
+import com.cardone.dscatalog.dto.UserUpdateDTO;
 import com.cardone.dscatalog.services.UserService;
 
 @RestController
@@ -52,8 +53,8 @@ public class UserController {
     }
     
     @PutMapping("/{id}")
-    public ResponseEntity<UserDTO> updateProduct(@PathVariable(value ="id") Long id, @Valid @RequestBody UserDTO UserDTO) {
-        UserDTO result = service.update(id, UserDTO);
+    public ResponseEntity<UserDTO> updateProduct(@PathVariable(value ="id") Long id, @Valid @RequestBody UserUpdateDTO dto) {
+        UserDTO result = service.update(id, dto);
         return ResponseEntity.ok().body(result);
     }
 
