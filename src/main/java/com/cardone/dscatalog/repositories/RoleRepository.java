@@ -2,8 +2,8 @@ package com.cardone.dscatalog.repositories;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import com.cardone.dscatalog.entities.Roles;
+import com.cardone.dscatalog.entities.Role;
 
-public interface RoleRepository extends JpaRepository<Roles, Long> {
+public interface RoleRepository extends JpaRepository<Role, Long> {
     
 }

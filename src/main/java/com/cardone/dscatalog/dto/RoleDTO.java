@@ -1,20 +1,20 @@
 package com.cardone.dscatalog.dto;
 
-import com.cardone.dscatalog.entities.Roles;
+import com.cardone.dscatalog.entities.Role;
 
-public class RolesDTO {
+public class RoleDTO {
     private Long id;
     private String authority;
 
-    public RolesDTO() {
+    public RoleDTO() {
     }
 
-    public RolesDTO(Long id, String authority) {
+    public RoleDTO(Long id, String authority) {
         this.id = id;
         this.authority = authority;
     }
 
-    public RolesDTO(Roles entity) {
+    public RoleDTO(Role entity) {
         id = entity.getId();
         authority = entity.getAuthority();
     }

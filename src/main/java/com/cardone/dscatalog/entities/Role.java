@@ -2,6 +2,8 @@ package com.cardone.dscatalog.entities;
 
 import java.util.Objects;
 
+import org.springframework.security.core.GrantedAuthority;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -10,22 +12,22 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_role")
-public class Roles {
+public class Role implements GrantedAuthority {
     
     @Id
      @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String authority;
 
-    public Roles(){
+    public Role(){
     }
 
-    public Roles(String authority, Long id) {
+    public Role( Long id, String authority) {
         this.authority = authority;
         this.id = id;
     }
 
-    public Roles(Roles entity) {
+    public Role(Role entity) {
         this.id = entity.getId();
         this.authority = entity.getAuthority();
     }
@@ -38,6 +40,7 @@ public class Roles {
         this.id = id;
     }
 
+    @Override
     public String getAuthority() {
         return authority;
     }
@@ -64,7 +67,7 @@ public class Roles {
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Roles other = (Roles) obj;
+        final Role other = (Role) obj;
         return Objects.equals(this.id, other.id);
     }
 

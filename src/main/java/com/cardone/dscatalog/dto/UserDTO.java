@@ -18,7 +18,7 @@ public class UserDTO {
     private String lastName;
     @Email(message = "Favor entrar com um email válido")
     private String email;
-    private List<RolesDTO> roles = new ArrayList<>();
+    private List<RoleDTO> roles = new ArrayList<>();
 
     public UserDTO() {
     }
@@ -35,7 +35,7 @@ public class UserDTO {
         this.firstName = entity.getFirstName();
         this.lastName = entity.getLastName();
         this.email = entity.getEmail();
-        entity.getRoles().forEach(role-> this.roles.add(new RolesDTO(role)));
+        entity.getRoles().forEach(role-> this.roles.add(new RoleDTO(role)));
     }
 
     public Long getId() {
@@ -70,11 +70,11 @@ public class UserDTO {
         this.email = email;
     }
 
-    public List<RolesDTO> getRoles() {
+    public List<RoleDTO> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<RolesDTO> roles) {
+    public void setRoles(List<RoleDTO> roles) {
         this.roles = roles;
     }
 
