@@ -5,23 +5,26 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.cardone.dscatalog.entities.Product;
-import com.cardone.dscatalog.projection.ProductProjection;
+import com.cardone.dscatalog.projection.IdProjection;
 
 public class Util {
     
-    public static List<Product> replace(List<ProductProjection> ordered,List<Product> unordered){
-
-        Map<Long, Product> map = new HashMap<>();
+    public static <ID> List<? extends IdProjection<ID>> replace( List<? extends IdProjection<ID>> ordered, 
+                                                          List<? extends IdProjection<ID>> unordered){
+        //Monta uma lista ordenada com base na projection que estava ordenada de acordo com o Pageable
+        //Necessário que a classe tenha implementado a interface IdProjection
+        Map<ID, IdProjection<ID>> map = new HashMap<>();
         //Inclue os produtos no map
-        unordered.forEach(product -> map.put(product.getId(), product));
+        for(IdProjection<ID> obj : unordered){
+            map.put(obj.getId(), obj);
+        }
 
         //Monta uma lista ordenada com base na ordenaçao do resultado da busca inicial
-        List<Product> result = new ArrayList<>();
+        List<IdProjection<ID>> result = new ArrayList<>();
 
         //Percorro a lista de projection e incluo no map de maneira ordenada de acordo com a ordenação da busca
-        for(ProductProjection p : ordered){
-            result.add(map.get(p.getId())); //Recupera o produto do map pelo Id e inclui na lista
+        for(IdProjection<ID> obj : ordered){
+            result.add(map.get(obj.getId())); //Recupera o produto do map pelo Id e inclui na lista
         }
         return result;
     }

@@ -34,6 +34,7 @@ public class ProductService {
     @Autowired
     private CategoryRepository categoryRepository;
 
+
     @Transactional(readOnly = true)
     public Page<ProductDTO> findAllPaged(Pageable pageable, String name, String categoryIds) {
 
@@ -56,7 +57,7 @@ public class ProductService {
         List<Product> products = repository.searchProductsWithCategories(productIds);
         
         //Chamo a função para ordenar os produtos de acordo com o que foi passado na busca inicial
-        products = Util.replace(list.getContent(), products);
+        products = (List<Product>) Util.replace(list.getContent(), products);
         
         //Convertendo a lista de produtos para uma lista de ProductsDTO
         List<ProductDTO> result = products.stream().map(e -> new ProductDTO(e, e.getCategories())).toList();
