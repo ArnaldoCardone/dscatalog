@@ -6,6 +6,7 @@ import java.util.Set;
 
 import com.cardone.dscatalog.entities.Category;
 import com.cardone.dscatalog.entities.Product;
+import com.cardone.dscatalog.projection.ProductProjection;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
@@ -41,6 +42,11 @@ public class ProductDTO {
         this.description = entity.getDescription();
         this.price = entity.getPrice();
         this.imgUrl = entity.getImgUrl();
+    }
+
+    public ProductDTO(ProductProjection entity) {
+        this.id = entity.getId();
+        this.name = entity.getName();
     }
 
     public ProductDTO(Product entity, Set<Category> categories ) {

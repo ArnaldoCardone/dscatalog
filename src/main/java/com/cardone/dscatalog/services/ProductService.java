@@ -1,5 +1,6 @@
 package com.cardone.dscatalog.services;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +17,7 @@ import com.cardone.dscatalog.entities.Category;
 import com.cardone.dscatalog.entities.Product;
 import com.cardone.dscatalog.exceptions.DatabaseException;
 import com.cardone.dscatalog.exceptions.ResourceNotFoundException;
+import com.cardone.dscatalog.projection.ProductProjection;
 import com.cardone.dscatalog.repositories.CategoryRepository;
 import com.cardone.dscatalog.repositories.ProductRepository;
 
@@ -31,9 +33,18 @@ public class ProductService {
     private CategoryRepository categoryRepository;
 
     @Transactional(readOnly = true)
-    public List<ProductDTO> findAll() {
-        List<Product> list = repository.findAll();
-        return list.stream().map(e -> new ProductDTO(e)).toList();
+    public Page<ProductProjection> findAllPaged(Pageable pageable, String name, String categoryIds) {
+
+        List<Long> catIds = Arrays.asList();
+        //Valida se foi informada categoria
+        if (!categoryIds.equals("0")) {
+            //Formata a lista de string em Long para passar para função de busca
+            String[] vet = categoryIds.split(",");
+            List<String> listCat = Arrays.asList(vet);
+            catIds = listCat.stream().map(Long::parseLong).toList();
+        }
+
+        return  repository.searchProducts(pageable, name, catIds);
     }
 
     @Transactional(readOnly = true)
@@ -47,7 +58,7 @@ public class ProductService {
     @Transactional
     public ProductDTO insert(ProductDTO dto) {
         Product entity = new Product();
-        copyDtoToEntity(dto,entity);
+        copyDtoToEntity(dto, entity);
         entity = repository.save(entity);
         return new ProductDTO(entity);
     }
@@ -56,7 +67,7 @@ public class ProductService {
     public ProductDTO update(Long id, ProductDTO dto) {
         try {
             Product entity = repository.getReferenceById(id);
-            copyDtoToEntity(dto,entity);
+            copyDtoToEntity(dto, entity);
             entity = repository.save(entity);
             return new ProductDTO(entity);
         } catch (EntityNotFoundException e) {
@@ -87,7 +98,7 @@ public class ProductService {
         entity.setDescription(dto.getDescription());
         entity.setPrice(dto.getPrice());
         entity.setImgUrl(dto.getImgUrl());
-        
+
         entity.getCategories().clear();
         for (CategoryDTO catDto : dto.getCategories()) {
             Category cat = categoryRepository.getReferenceById(catDto.getId());

@@ -28,6 +28,7 @@ import com.cardone.dscatalog.services.ProductService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @WebMvcTest(value = ProductController.class, excludeAutoConfiguration={SecurityAutoConfiguration.class} )
+//Exclui a configuração de segurança para não precisar de um token para acessar os endpoints
 public class ProductControllerTests {
 
     @Autowired

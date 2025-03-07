@@ -16,10 +16,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.cardone.dscatalog.dto.ProductDTO;
+import com.cardone.dscatalog.projection.ProductProjection;
 import com.cardone.dscatalog.services.ProductService;
 
 @RestController
@@ -28,11 +30,13 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/list")
-    public ResponseEntity<Page<ProductDTO>> findAll(Pageable pageable) {
+    @GetMapping()
+    public ResponseEntity<Page<ProductProjection>> findAll(Pageable pageable, 
+                   @RequestParam(value="name", defaultValue="") String name, 
+                   @RequestParam(value="categoryId", defaultValue="0") String categoryId) {
         //Parametros pageable: page, size, sort
         
-        Page<ProductDTO> list = productService.findAllPaged(pageable);
+        Page<ProductProjection> list = productService.findAllPaged(pageable, name, categoryId);
         return ResponseEntity.ok().body(list);
     }
 
