@@ -21,6 +21,7 @@ import com.cardone.dscatalog.exceptions.ResourceNotFoundException;
 import com.cardone.dscatalog.projection.ProductProjection;
 import com.cardone.dscatalog.repositories.CategoryRepository;
 import com.cardone.dscatalog.repositories.ProductRepository;
+import com.cardone.dscatalog.util.Util;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -53,6 +54,10 @@ public class ProductService {
 
         //Busca as categorias dos produtos encontrados na busca acima
         List<Product> products = repository.searchProductsWithCategories(productIds);
+        
+        //Chamo a função para ordenar os produtos de acordo com o que foi passado na busca inicial
+        products = Util.replace(list.getContent(), products);
+        
         //Convertendo a lista de produtos para uma lista de ProductsDTO
         List<ProductDTO> result = products.stream().map(e -> new ProductDTO(e, e.getCategories())).toList();
 
