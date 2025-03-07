@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -33,7 +34,7 @@ public class ProductService {
     private CategoryRepository categoryRepository;
 
     @Transactional(readOnly = true)
-    public Page<ProductProjection> findAllPaged(Pageable pageable, String name, String categoryIds) {
+    public Page<ProductDTO> findAllPaged(Pageable pageable, String name, String categoryIds) {
 
         List<Long> catIds = Arrays.asList();
         //Valida se foi informada categoria
@@ -44,7 +45,20 @@ public class ProductService {
             catIds = listCat.stream().map(Long::parseLong).toList();
         }
 
-        return  repository.searchProducts(pageable, name, catIds);
+        //Executa a consulta para buscar os produtos de acordo com os filtros
+        Page<ProductProjection> list = repository.searchProducts(pageable, name, catIds);
+
+        //Monta uma lista de Product Ids para buscar as categorias
+        List<Long> productIds = list.map(e -> e.getId()).toList();
+
+        //Busca as categorias dos produtos encontrados na busca acima
+        List<Product> products = repository.searchProductsWithCategories(productIds);
+        //Convertendo a lista de produtos para uma lista de ProductsDTO
+        List<ProductDTO> result = products.stream().map(e -> new ProductDTO(e, e.getCategories())).toList();
+
+        //Cria um novo objeto Page com a lista de produtos encontrados, variave list vem do retorno da busca inincial
+        Page<ProductDTO> pageResult = new PageImpl<>(result, list.getPageable(), list.getTotalElements());
+        return pageResult;
     }
 
     @Transactional(readOnly = true)
