@@ -53,10 +53,23 @@ public class UserService implements UserDetailsService {
         return new UserDTO(result);
     }
 
+    //Insere um usuário e suas roles
     @Transactional
     public UserDTO insert(UserInsertDTO dto) {
         User entity = new User();
         copyDtoToEntity(dto,entity);
+        entity.setPassword(passwordEncoder.encode(dto.getPassword()));
+        entity = repository.save(entity);
+        return new UserDTO(entity);
+    }
+
+    //Insere um usuário e atribui a role OPERATOR
+    @Transactional
+    public UserDTO insertSignUp(UserInsertDTO dto) {
+        User entity = new User();
+        copyDtoToEntity(dto,entity);
+        entity.getRoles().clear();
+        entity.getRoles().add(roleRepository.findByAuthority("ROLE_OPERATOR"));
         entity.setPassword(passwordEncoder.encode(dto.getPassword()));
         entity = repository.save(entity);
         return new UserDTO(entity);

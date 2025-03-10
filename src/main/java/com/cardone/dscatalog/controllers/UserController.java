@@ -47,10 +47,10 @@ public class UserController {
         return ResponseEntity.ok(result);
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<UserDTO> insertUser(@Valid @RequestBody UserInsertDTO userInsertDTO) {
-        UserDTO result = service.insert(userInsertDTO);
+        UserDTO result = service.insertSignUp(userInsertDTO);
         //Monta a URL para acessar o recurso criado
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(result.getId()).toUri();
         return ResponseEntity.created(uri).body(result);
