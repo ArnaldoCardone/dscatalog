@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.cardone.dscatalog.exceptions.DatabaseException;
 import com.cardone.dscatalog.exceptions.ResourceNotFoundException;
+import com.cardone.dscatalog.services.exceptions.EmailException;
 
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -54,5 +55,16 @@ public class SourceExceptionHandler {
         }
 
         return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).body(err);
+    }
+
+     @ExceptionHandler(EmailException.class)
+    public ResponseEntity<StandardError> email(EmailException e, HttpServletRequest request) {
+        StandardError err = new StandardError();
+        err.setTimestamp(Instant.now());
+        err.setStatus(HttpStatus.BAD_REQUEST.value());
+        err.setError("Erro ao Enviar Email");
+        err.setMessage(e.getMessage());
+        err.setPath(request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err);
     }
 }
