@@ -6,7 +6,11 @@ import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,8 +39,8 @@ public class AuthService {
     private PasswordRecoverRepository passwordRecoverRepository;
     @Autowired
     private EmailService emailService;
-@Autowired
-private PasswordEncoder passwordEncoder;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
     @Transactional
     public void createRecoveryToken(EmailDTO dto) {
@@ -54,22 +58,22 @@ private PasswordEncoder passwordEncoder;
         entity = passwordRecoverRepository.save(entity);
 
         //Envia o email com a chave criada
-        String sBody = "Clique no link para recuperar a senha\n\n " 
-                  + urlChangePassword + entity.getToken() 
-                  + "\n\nO link expira em " + tokenMinutes + " minutos";
+        String sBody = "Clique no link para recuperar a senha\n\n "
+                + urlChangePassword + entity.getToken()
+                + "\n\nO link expira em " + tokenMinutes + " minutos";
 
-        emailService.sendEmail(dto.getEmail(),"Recuperação de senha",sBody);
-        
+        emailService.sendEmail(dto.getEmail(), "Recuperação de senha", sBody);
+
     }
 
     @Transactional
     public void saveNewPassword(NewPasswordDTO dto) {
         //Valida se o token existe na base
-        List<PasswordRecover> result = passwordRecoverRepository.searchValidTokens(dto.getToken(),Instant.now());
+        List<PasswordRecover> result = passwordRecoverRepository.searchValidTokens(dto.getToken(), Instant.now());
         if (result.size() == 0) {
             throw new ResourceNotFoundException("Token inválido!");
         }
-    
+
         //Busca o usuário associado ao  token e atualiza a senha do usuário
         User user = userRepository.findByEmail(result.get(0).getEmail());
         user.setPassword(passwordEncoder.encode(dto.getPassword()));  //criptografa a senha antes de salvar
@@ -78,5 +82,16 @@ private PasswordEncoder passwordEncoder;
         //Exclui o token
         passwordRecoverRepository.delete(result.get(0));
     }
-    
+
+    protected User authenticated() {
+        try {
+            Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+            Jwt jwtPrincipal = (Jwt) authentication.getPrincipal();
+            String username = jwtPrincipal.getClaim("user");
+            return userRepository.findByEmail(username);
+        } catch (Exception e) {
+            throw new UsernameNotFoundException("Invalid user");
+        }
+    }
+
 }

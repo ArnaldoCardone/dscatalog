@@ -39,6 +39,9 @@ public class UserService implements UserDetailsService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
+    @Autowired
+    private AuthService authService;
+
     @Transactional(readOnly = true)
     public List<UserDTO> findAll() {
         List<User> list = repository.findAll();
@@ -50,6 +53,16 @@ public class UserService implements UserDetailsService {
 
         User result = repository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Usuario não encontrado!"));
+        return new UserDTO(result);
+    }
+
+    @Transactional(readOnly = true)
+    public UserDTO findLoggedUser() {
+
+        User result = authService.authenticated();
+        if(result == null){
+            throw new ResourceNotFoundException("Usuario não encontrado!");
+        }
         return new UserDTO(result);
     }
 

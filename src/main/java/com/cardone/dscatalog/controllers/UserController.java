@@ -47,6 +47,8 @@ public class UserController {
         return ResponseEntity.ok(result);
     }
 
+
+
     //@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
     @PostMapping
     public ResponseEntity<UserDTO> insertUser(@Valid @RequestBody UserInsertDTO userInsertDTO) {
@@ -68,6 +70,13 @@ public class UserController {
     public ResponseEntity<UserDTO> deleteProduct(@PathVariable(value ="id") Long id) {
         service.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_OPERATOR')")
+    @GetMapping("/me")
+    public ResponseEntity<UserDTO> findLoggedUser() {
+        UserDTO result = service.findLoggedUser();
+        return ResponseEntity.ok(result);
     }
     
 }
