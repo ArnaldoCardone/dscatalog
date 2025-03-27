@@ -1,8 +1,10 @@
 package com.cardone.dscatalog.dto;
 
 import com.cardone.dscatalog.entities.Category;
-import javax.validation.constraints.Size;
-import javax.validation.constraints.NotBlank;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 
 
 public class CategoryDTO {

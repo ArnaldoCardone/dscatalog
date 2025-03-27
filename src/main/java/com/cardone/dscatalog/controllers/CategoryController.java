@@ -3,8 +3,6 @@ package com.cardone.dscatalog.controllers;
 import java.net.URI;
 import java.util.List;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,6 +18,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.cardone.dscatalog.dto.CategoryDTO;
 import com.cardone.dscatalog.services.CategoryService;
+
+import jakarta.validation.Valid;
 
 
 

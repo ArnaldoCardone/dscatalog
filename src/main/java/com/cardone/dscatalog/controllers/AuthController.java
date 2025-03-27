@@ -1,6 +1,6 @@
 package com.cardone.dscatalog.controllers;
 
-import javax.validation.Valid;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cardone.dscatalog.dto.EmailDTO;
 import com.cardone.dscatalog.dto.NewPasswordDTO;
 import com.cardone.dscatalog.services.AuthService;
+
+import jakarta.validation.Valid;
 
 
 @RestController

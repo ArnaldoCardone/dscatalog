@@ -3,15 +3,15 @@ package com.cardone.dscatalog.services.validation;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cardone.dscatalog.controllers.exceptions.FieldMessage;
 import com.cardone.dscatalog.dto.UserInsertDTO;
 import com.cardone.dscatalog.entities.User;
 import com.cardone.dscatalog.repositories.UserRepository;
+
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 
 public class UserInsertValidator implements ConstraintValidator<UserInsertValid, UserInsertDTO> {
 	

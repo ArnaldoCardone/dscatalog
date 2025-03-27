@@ -2,8 +2,6 @@ package com.cardone.dscatalog.controllers;
 
 import java.net.URI;
 
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,6 +21,8 @@ import com.cardone.dscatalog.dto.UserDTO;
 import com.cardone.dscatalog.dto.UserInsertDTO;
 import com.cardone.dscatalog.dto.UserUpdateDTO;
 import com.cardone.dscatalog.services.UserService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping(value = "/users")
